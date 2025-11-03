@@ -5,61 +5,57 @@
 # 模擬參數
 # ============================================
 simulation:
-  mode: "statistical"      # statistical: 統計模擬 / replay: 精確重放
-  duration: 30             # 模擬持續時間（秒）
+  mode: "replay"           # statistical: 統計模擬 / replay: 序列重放 ← 改這裡
+  duration: 30             # 模擬持續時間（秒，僅用於 statistical 模式）
+  
+  # 重放模式設定
+  replay:
+    max_packets: 1000      # 最大重放封包數（0=全部）
+    time_scale: 1.0        # 時間縮放（1.0=原速, 0.5=兩倍速, 2.0=半速）
+    skip_small_packets: false  # 是否跳過小封包（<100 bytes）
   
   # 執行方式
   execution:
-    threading: true        # 是否使用多執行緒
-    async: false          # 是否使用非同步（暫不支援）
-    max_workers: 10       # 最大執行緒數
+    threading: false       # 重放模式建議用單執行緒
+    async: false
+    max_workers: 10
 
 # ============================================
 # 流量來源
 # ============================================
 sources:
-  # 範例：使用 JSON 特徵
   - type: "json"
     path: "features/normal_browsing_30s_features.json"
-    weight: 1.0           # 權重（用於混合多來源，暫不支援）
-    enabled: true         # 是否啟用
-  
-  # 範例：使用 PCAP（暫不支援）
-  # - type: "pcap"
-  #   path: "wireshark/20251104.pcap"
-  #   weight: 0.5
-  #   enabled: false
+    weight: 1.0
+    enabled: true
 
 # ============================================
-# 網路拓樸
+# 網路拓樸（僅用於 statistical 模式）
 # ============================================
 topology:
-  clients: 5              # Client 數量
-  server_port: 8443       # Server 監聽 port
+  clients: 5
+  server_port: 8443
   
-  # 連線模式
-  connection_pattern: "realistic"  # realistic: 真實模式 / burst: 突發 / steady: 穩定
+  connection_pattern: "realistic"
   
-  # 每個 Client 的行為
   per_client:
-    connections: 10       # 每個 Client 的連線數
-    interval_range: [0.1, 2.0]  # 連線間隔範圍（秒）[最小, 最大]
+    connections: 10
+    interval_range: [0.1, 2.0]
 
 # ============================================
 # 資料集輸出
 # ============================================
 dataset:
-  output_dir: "datasets"  # 輸出目錄
-  format: "pcap"          # 格式（目前僅支援 pcap）
+  output_dir: "datasets"
+  format: "pcap"
   
-  # Metadata
   metadata:
-    label: "normal"       # 標籤
-    scenario: "web_browsing"  # 場景描述
+    label: "normal"
+    scenario: "web_browsing"
     
 # ============================================
 # 日誌
 # ============================================
 logging:
-  level: "INFO"           # DEBUG / INFO / WARNING / ERROR
-  verbose: false          # 詳細模式（顯示每個連線）
+  level: "INFO"
+  verbose: false
