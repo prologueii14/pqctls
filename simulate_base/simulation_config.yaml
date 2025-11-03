@@ -1,0 +1,65 @@
+# PQC-TLS 流量模擬配置
+# 最後更新: 2025-11-04
+
+# ============================================
+# 模擬參數
+# ============================================
+simulation:
+  mode: "statistical"      # statistical: 統計模擬 / replay: 精確重放
+  duration: 30             # 模擬持續時間（秒）
+  
+  # 執行方式
+  execution:
+    threading: true        # 是否使用多執行緒
+    async: false          # 是否使用非同步（暫不支援）
+    max_workers: 10       # 最大執行緒數
+
+# ============================================
+# 流量來源
+# ============================================
+sources:
+  # 範例：使用 JSON 特徵
+  - type: "json"
+    path: "features/normal_browsing_30s_features.json"
+    weight: 1.0           # 權重（用於混合多來源，暫不支援）
+    enabled: true         # 是否啟用
+  
+  # 範例：使用 PCAP（暫不支援）
+  # - type: "pcap"
+  #   path: "wireshark/20251104.pcap"
+  #   weight: 0.5
+  #   enabled: false
+
+# ============================================
+# 網路拓樸
+# ============================================
+topology:
+  clients: 5              # Client 數量
+  server_port: 8443       # Server 監聽 port
+  
+  # 連線模式
+  connection_pattern: "realistic"  # realistic: 真實模式 / burst: 突發 / steady: 穩定
+  
+  # 每個 Client 的行為
+  per_client:
+    connections: 10       # 每個 Client 的連線數
+    interval_range: [0.1, 2.0]  # 連線間隔範圍（秒）[最小, 最大]
+
+# ============================================
+# 資料集輸出
+# ============================================
+dataset:
+  output_dir: "datasets"  # 輸出目錄
+  format: "pcap"          # 格式（目前僅支援 pcap）
+  
+  # Metadata
+  metadata:
+    label: "normal"       # 標籤
+    scenario: "web_browsing"  # 場景描述
+    
+# ============================================
+# 日誌
+# ============================================
+logging:
+  level: "INFO"           # DEBUG / INFO / WARNING / ERROR
+  verbose: false          # 詳細模式（顯示每個連線）

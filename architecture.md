@@ -646,6 +646,63 @@ code .
 
 ---
 
+## 🌊 流量模擬系統
+
+### 目標
+
+將真實世界流量特徵轉換為基於 PQC-TLS 的正常流量資料集。
+
+### 架構
+```
+真實流量來源 (PCAP/JSON)
+    ↓
+來源管理器 (source_manager)
+    ↓
+模擬引擎 (traffic_simulator)
+    ↓
+執行層 (simulation_client/server)
+    ↓
+捕獲層 (dataset_builder → traffic_capture)
+    ↓
+PQC-TLS 資料集 (PCAP + metadata)
+    ↓
+分析器 (analyzer)
+```
+
+### 核心模組
+
+| 模組 | 路徑 | 職責 |
+|------|------|------|
+| 來源管理 | `simulate_base/source_manager.py` | 讀取並統一流量特徵 |
+| 模擬引擎 | `simulate_base/traffic_simulator.py` | 調度連線和時序控制 |
+| Client 包裝 | `simulate_base/simulation_client.py` | 包裝 normal_client |
+| Server 包裝 | `simulate_base/simulation_server.py` | 包裝 normal_server |
+| 資料集建構 | `simulate_base/dataset_builder.py` | 捕獲並組織資料集 |
+| 分析器 | `simulate_base/analyzer.py` | 事後分析和報告 |
+
+### 與核心系統的關聯
+```
+模擬系統使用核心系統的：
+- core/normal_client.py（被包裝）
+- core/normal_server.py（被包裝）
+- utils/traffic_capture.py（被整合）
+- utils/settings.py（共用配置）
+
+核心系統不依賴模擬系統（單向依賴）
+```
+
+### 配置管理
+
+- **全域配置**: `serversetting.yaml`（OpenSSL、PQC 算法）
+- **模擬配置**: `simulate_base/simulation_config.yaml`（模擬參數）
+
+### 詳細文檔
+
+- 總覽：`simulate_base/README.md`
+- 實作計劃：`simulate_base/IMPLEMENTATION_PLAN.md`
+- API 參考：`simulate_base/API_REFERENCE.md`
+
+
 ## 📄 授權
 
 本專案僅供學術研究和教育用途。請遵守相關法律法規和倫理規範。
