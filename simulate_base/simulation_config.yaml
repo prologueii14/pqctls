@@ -25,7 +25,8 @@ simulation:
 # ============================================
 sources:
   - type: "json"
-    path: "features/normal_browsing_30s_features.json"
+    #path: "features/normal_browsing_30s_features.json"
+    path: "features/normal_browsing_30s_connections.json"
     weight: 1.0
     enabled: true
 
