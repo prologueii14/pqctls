@@ -56,4 +56,7 @@ checkpoints/
 env/
 serversetting.yaml
 certs/
+
+# Third-party / Vendors
+oqs-provider-0.10.0/
 '@ | Out-File -Encoding UTF8 .gitignore

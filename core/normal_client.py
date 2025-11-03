@@ -66,7 +66,7 @@ class TLSClient:
                     text=True
                 )
                 
-                stdout, stderr = process.communicate(input=message + "\n", timeout=10)
+                stdout, stderr = process.communicate(input=message + "\n", timeout=120)
                 
                 print("連線成功！")
                 print("\n=== 握手資訊 ===")
