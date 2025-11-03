@@ -1,0 +1,61 @@
+# PQC-TLS 流量模擬配置
+# 最後更新: 2025-11-04
+
+# ============================================
+# 模擬參數
+# ============================================
+simulation:
+  mode: "replay"           # statistical: 統計模擬 / replay: 序列重放 ← 改這裡
+  duration: 30             # 模擬持續時間（秒，僅用於 statistical 模式）
+  
+  # 重放模式設定
+  replay:
+    max_packets: 1000      # 最大重放封包數（0=全部）
+    time_scale: 1.0        # 時間縮放（1.0=原速, 0.5=兩倍速, 2.0=半速）
+    skip_small_packets: false  # 是否跳過小封包（<100 bytes）
+  
+  # 執行方式
+  execution:
+    threading: false       # 重放模式建議用單執行緒
+    async: false
+    max_workers: 10
+
+# ============================================
+# 流量來源
+# ============================================
+sources:
+  - type: "json"
+    path: "features/normal_browsing_30s_features.json"
+    weight: 1.0
+    enabled: true
+
+# ============================================
+# 網路拓樸（僅用於 statistical 模式）
+# ============================================
+topology:
+  clients: 5
+  server_port: 8443
+  
+  connection_pattern: "realistic"
+  
+  per_client:
+    connections: 10
+    interval_range: [0.1, 2.0]
+
+# ============================================
+# 資料集輸出
+# ============================================
+dataset:
+  output_dir: "datasets"
+  format: "pcap"
+  
+  metadata:
+    label: "normal"
+    scenario: "web_browsing"
+    
+# ============================================
+# 日誌
+# ============================================
+logging:
+  level: "INFO"
+  verbose: false
