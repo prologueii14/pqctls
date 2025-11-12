@@ -1,0 +1,33 @@
+# 實驗 02: 封包大小測試
+# Experiment 02: Packet Size Test
+
+name: "封包大小測試"
+description: "測試不同封包大小對 PQC-TLS 的影響"
+
+sequences:
+  # 超小封包 (50-200 bytes) - 模擬遊戲指令
+  - pattern: gaming
+    override:
+      connections: 10
+      size:
+        min: 50
+        max: 200
+    wait: 2
+
+  # 中等封包 (1000-5000 bytes) - 模擬網頁資源
+  - pattern: web_browsing
+    override:
+      connections: 10
+      size:
+        min: 1000
+        max: 5000
+    wait: 2
+
+  # 大封包 (10000-50000 bytes) - 模擬檔案傳輸
+  - pattern: file_download
+    override:
+      connections: 10
+      size:
+        min: 10000
+        max: 50000
+    wait: 0

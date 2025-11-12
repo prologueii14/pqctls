@@ -1,0 +1,62 @@
+# Traffic Pattern Definitions
+# 流量模式定義（僅正常流量）
+
+patterns:
+  web_browsing:
+    type: benign
+    description: "模擬網頁瀏覽流量 - 包含多個小到中等大小的請求"
+    connections: 20
+    size:
+      min: 100
+      max: 5000
+    interval:
+      min: 0.5
+      max: 3.0
+    burst: false
+
+  video_streaming:
+    type: benign
+    description: "模擬影片串流流量 - 持續較大的資料傳輸"
+    connections: 50
+    size:
+      min: 5000
+      max: 50000
+    interval:
+      min: 0.1
+      max: 0.5
+    burst: false
+
+  file_download:
+    type: benign
+    description: "模擬檔案下載流量 - 大量資料傳輸"
+    connections: 10
+    size:
+      min: 10000
+      max: 100000
+    interval:
+      min: 1.0
+      max: 5.0
+    burst: true
+
+  gaming:
+    type: benign
+    description: "模擬遊戲流量 - 頻繁的小封包"
+    connections: 100
+    size:
+      min: 50
+      max: 500
+    interval:
+      min: 0.05
+      max: 0.2
+    burst: false
+
+server:
+  port: 4433
+  kem_algorithm: "mlkem768"
+  sig_algorithm: "mldsa65"
+  keylog_file: "data/keys/server_keylog.log"
+
+capture:
+  enabled: true
+  output_dir: "data/pcaps"
+  interface: "\\Device\\NPF_Loopback"

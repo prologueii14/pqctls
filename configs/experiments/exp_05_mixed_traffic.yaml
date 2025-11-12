@@ -1,0 +1,46 @@
+# 實驗 05: 混合流量模擬
+# Experiment 05: Mixed Traffic Simulation
+
+name: "混合流量模擬"
+description: "模擬真實網路環境的混合流量 - 網頁瀏覽、影片串流、檔案下載、遊戲"
+
+sequences:
+  # 背景網頁瀏覽
+  - pattern: web_browsing
+    override:
+      connections: 15
+      interval:
+        min: 1.0
+        max: 5.0
+    wait: 1
+
+  # 突然開始影片串流
+  - pattern: video_streaming
+    override:
+      connections: 30
+      interval:
+        min: 0.1
+        max: 0.3
+    wait: 2
+
+  # 繼續網頁瀏覽
+  - pattern: web_browsing
+    override:
+      connections: 10
+    wait: 1
+
+  # 下載檔案（突發模式）
+  - pattern: file_download
+    override:
+      connections: 5
+      burst: true
+    wait: 2
+
+  # 玩遊戲
+  - pattern: gaming
+    override:
+      connections: 50
+      interval:
+        min: 0.05
+        max: 0.15
+    wait: 0

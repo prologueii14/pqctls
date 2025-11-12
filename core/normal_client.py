@@ -3,10 +3,11 @@ from utils.settings import settings
 import os
 
 class TLSClient:
-    def __init__(self, host='localhost', port=4433, kem_algorithm=None):
+    def __init__(self, host='localhost', port=4433, kem_algorithm=None, sig_algorithm=None):
         self.host = host
         self.port = port
         self.kem_algorithm = kem_algorithm or settings.algorithms['default_kem']
+        self.sig_algorithm = sig_algorithm or settings.algorithms['default_signature']
     
     def connect(self, message=None, debug=False, keylog_file=None):
         """
@@ -19,25 +20,28 @@ class TLSClient:
         """
         openssl = settings.get_openssl_cmd()
         provider_path = settings.paths['oqs_provider_dir']
-        
+
         kem = settings.get_algorithm(self.kem_algorithm)
-        
+        sig = settings.get_algorithm(self.sig_algorithm)
+
         print("=" * 60)
-        print(f"🔌 連接 PQC-TLS Server")
+        print(f"[CONNECT] 連接 PQC-TLS Server")
         print("=" * 60)
         print(f"目標:          {self.host}:{self.port}")
         print(f"KEM 算法:      {kem}")
+        print(f"簽名算法:      {sig}")
         if debug:
-            print(f"Debug 模式:    ✅ 啟用")
+            print(f"Debug 模式:    [ON]")
         if keylog_file:
             print(f"Keylog 檔案:   {keylog_file}")
         print("=" * 60)
-        
+
         cmd = [
             openssl, 's_client',
             '-connect', f'{self.host}:{self.port}',
             '-tls1_3',
             '-groups', kem,
+            '-sigalgs', sig,
             '-provider-path', provider_path,
             '-provider', 'default',
             '-provider', 'oqsprovider',
@@ -83,11 +87,11 @@ class TLSClient:
                 process.wait()
                 
         except subprocess.TimeoutExpired:
-            print("⏱️  連線超時")
+            print("[TIMEOUT] 連線超時")
         except KeyboardInterrupt:
-            print("\n\n⚠️  連線中斷")
+            print("\n\n[WARN] 連線中斷")
         except Exception as e:
-            print(f"❌ 連線錯誤: {e}")
+            print(f"[ERROR] 連線錯誤: {e}")
 
 if __name__ == "__main__":
     client = TLSClient()

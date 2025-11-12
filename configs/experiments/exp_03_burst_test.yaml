@@ -1,0 +1,20 @@
+# 實驗 03: 突發流量測試
+# Experiment 03: Burst Traffic Test
+
+name: "突發流量測試"
+description: "測試突發模式下的流量特徵與正常模式的差異"
+
+sequences:
+  # 正常模式 - 均勻分布
+  - pattern: web_browsing
+    override:
+      connections: 20
+      burst: false
+    wait: 3
+
+  # 突發模式 - 70% 機率瞬間爆發
+  - pattern: web_browsing
+    override:
+      connections: 20
+      burst: true
+    wait: 0

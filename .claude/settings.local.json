@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(tshark:*)",
+      "Bash(python:*)",
+      "Bash(xxd:*)",
+      "Bash(ipconfig:*)",
+      "Bash(findstr:*)",
+      "Bash(find:*)",
+      "Bash(reg query \"HKLM\\SOFTWARE\\Npcap\")",
+      "Bash(netsh interface ipv4 show interfaces:*)",
+      "Bash(openssl x509:*)",
+      "Bash(\"C:\\Users\\88692\\anaconda3\\envs\\yolov11\\Library\\bin\\openssl.exe\" x509 -in certs/server_cert.pem -text -noout)",
+      "Bash(\"C:\\Users\\88692\\anaconda3\\envs\\yolov11\\Library\\bin\\openssl.exe\" x509 -in certs/server_cert.pem -noout -text)",
+      "Bash(\"C:\\Users\\88692\\anaconda3\\envs\\yolov11\\Library\\bin\\openssl.exe\" list -providers -provider-path \"H:\\Workspace\\NYCU\\Code\\pqctls\\oqs-provider-0.10.0\\build\\lib\\Release\" -provider oqsprovider -verbose)",
+      "Bash(set OPENSSL_MODULES=H:WorkspaceNYCUCodepqctlsoqs-provider-0.10.0buildlibRelease)",
+      "Bash(\"C:\\Users\\88692\\anaconda3\\envs\\yolov11\\Library\\bin\\openssl.exe\" list -signature-algorithms -provider oqsprovider)",
+      "Bash(\"C:\\Users\\88692\\anaconda3\\envs\\yolov11\\Library\\bin\\openssl.exe\" list -signature-algorithms -provider-path \"H:\\Workspace\\NYCU\\Code\\pqctls\\oqs-provider-0.10.0\\build\\lib\\Release\" -provider default -provider oqsprovider)",
+      "Bash(\"C:\\Users\\88692\\anaconda3\\envs\\yolov11\\Library\\bin\\openssl.exe\" s_client -connect localhost:4433 -tls1_3 -groups mlkem768 -sigalgs mldsa65 -provider-path \"H:\\Workspace\\NYCU\\Code\\pqctls\\oqs-provider-0.10.0\\build\\lib\\Release\" -provider default -provider oqsprovider -CAfile certs/server_cert.pem -brief)",
+      "Bash(cat:*)",
+      "Bash(\"C:\\Users\\88692\\anaconda3\\envs\\yolov11\\Library\\bin\\openssl.exe\" ciphers -v -tls1_3)",
+      "Bash(\"C:\\Users\\88692\\anaconda3\\envs\\yolov11\\Library\\bin\\openssl.exe\" list -kem-algorithms -provider-path \"H:\\Workspace\\NYCU\\Code\\pqctls\\oqs-provider-0.10.0\\build\\lib\\Release\" -provider default -provider oqsprovider)",
+      "Bash(pip install:*)",
+      "Bash(netstat:*)",
+      "Bash(taskkill:*)",
+      "Bash(pwd:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

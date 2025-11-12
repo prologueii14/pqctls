@@ -18,10 +18,10 @@ class TLSServer:
     
     def _ensure_certificates(self):
         if not os.path.exists(self.key_file) or not os.path.exists(self.cert_file):
-            print("⚠️  憑證不存在，開始生成...")
+            print("[WARN] 憑證不存在，開始生成...")
             self.cert_manager.generate_server_cert(algorithm=self.sig_algorithm)
         else:
-            print("✅ 使用現有憑證")
+            print("[OK] 使用現有憑證")
     
     def start(self, debug=False, keylog_file=None):
         """
@@ -33,26 +33,27 @@ class TLSServer:
         """
         openssl = settings.get_openssl_cmd()
         provider_path = settings.paths['oqs_provider_dir']
-        
+
         kem = settings.get_algorithm(self.kem_algorithm)
-        
+        sig = settings.get_algorithm(self.sig_algorithm)
+
         print("=" * 60)
-        print(f"🚀 啟動 PQC-TLS Server")
+        print(f"[START] 啟動 PQC-TLS Server")
         print("=" * 60)
         print(f"Port:          {self.port}")
         print(f"KEM 算法:      {kem}")
-        print(f"簽章算法:      {self.sig_algorithm}")
+        print(f"簽章算法:      {sig}")
         print(f"憑證:          {self.cert_file}")
         print(f"私鑰:          {self.key_file}")
         if debug:
-            print(f"Debug 模式:    ✅ 啟用")
+            print(f"Debug 模式:    [ON]")
         if keylog_file:
             print(f"Keylog 檔案:   {keylog_file}")
         print("=" * 60)
-        
+
         cert_file_abs = os.path.abspath(self.cert_file)
         key_file_abs = os.path.abspath(self.key_file)
-        
+
         cmd = [
             openssl, 's_server',
             '-accept', str(self.port),
@@ -60,6 +61,7 @@ class TLSServer:
             '-key', key_file_abs,
             '-tls1_3',
             '-groups', kem,
+            '-sigalgs', sig,
             '-provider-path', provider_path,
             '-provider', 'default',
             '-provider', 'oqsprovider',
@@ -82,10 +84,10 @@ class TLSServer:
             self.process.wait()
             
         except KeyboardInterrupt:
-            print("\n\n⚠️  收到中斷信號，正在關閉 Server...")
+            print("\n\n[WARN] 收到中斷信號，正在關閉 Server...")
             self.stop()
         except Exception as e:
-            print(f"\n❌ Server 錯誤: {e}")
+            print(f"\n[ERROR] Server 錯誤: {e}")
             self.stop()
     
     def stop(self):
@@ -95,7 +97,7 @@ class TLSServer:
                 self.process.wait(timeout=5)
             except subprocess.TimeoutExpired:
                 self.process.kill()
-            print("✅ Server 已停止")
+            print("[OK] Server 已停止")
 
 if __name__ == "__main__":
     server = TLSServer(port=4433)

@@ -1,0 +1,16 @@
+# 實驗 00: 快速測試
+# Experiment 00: Quick Test
+
+name: "快速測試"
+description: "快速驗證系統是否正常運作 - 少量連線"
+
+sequences:
+  - pattern: web_browsing
+    override:
+      connections: 3
+    wait: 1
+
+  - pattern: gaming
+    override:
+      connections: 5
+    wait: 0

@@ -1,0 +1,26 @@
+# 實驗 01: 正常流量測試
+# Experiment 01: Normal Traffic Test
+
+name: "正常流量測試"
+description: "測試所有正常流量模式 - 網頁瀏覽、影片串流、檔案下載、遊戲"
+
+sequences:
+  - pattern: web_browsing
+    override:
+      connections: 10
+    wait: 2
+
+  - pattern: video_streaming
+    override:
+      connections: 20
+    wait: 2
+
+  - pattern: file_download
+    override:
+      connections: 5
+    wait: 2
+
+  - pattern: gaming
+    override:
+      connections: 30
+    wait: 0
